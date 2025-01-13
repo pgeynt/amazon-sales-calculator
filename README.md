@@ -9,8 +9,6 @@ Dark Mode: Toggle between light and dark themes for a comfortable user experienc
 🔧 Installation
 Clone the Repository:
 bash
-Kodu kopyala
-git clone https://github.com/yourusername/amazon-sales-calculator.git
 Open Chrome Extensions Page:
 Navigate to chrome://extensions/ in your Chrome browser.
 Enable Developer Mode:
