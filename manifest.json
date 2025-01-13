@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Price Calculator",
+  "version": "1.0",
+  "description": "Döviz kuru ile fiyat hesaplama uzantısı",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "permissions": [
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://kur.doviz.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://kur.doviz.com/serbest-piyasa/amerikan-dolari"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

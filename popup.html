@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Price Calculator</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"/>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+  <div class="container mt-3">
+
+    
+    <!-- Exchange Rate Display -->
+    <div id="exchangeRateDisplay" class="alert alert-info text-center" role="alert">
+      Ziraat Katılım Satış: <span id="exchangeRate">-</span>
+    </div>
+
+    <!-- Button Group for Regions -->
+    <div class="btn-group mb-3" role="group" aria-label="Region selection">
+      <a href="#" id="usButton" class="btn  active flag-icon flag-icon-us" data-code="US"></a>
+      <a href="#" id="euButton" class="btn  flag-icon flag-icon-eu" data-code="EU"></a>
+      <a href="#" id="aeButton" class="btn  flag-icon flag-icon-ae" data-code="AE"></a>
+      <a href="#" id="caButton" class="btn  flag-icon flag-icon-ca" data-code="CAD"></a>
+      <a href="#" id="saButton" class="btn  flag-icon flag-icon-sa" data-code="SA"></a>
+    </div>
+    <!-- US Form -->
+    <div id="usForm" class="region-form active">
+      <form id="priceForm">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="sellerPrice">Seller Price (TL):</label>
+            <input type="number" class="form-control" id="sellerPrice" name="sellerPrice" step="0.01">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="shipping">Shipping (USD):</label>
+            <input type="number" class="form-control" id="shipping" name="shipping" step="0.01">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="salesPriceUSD">Sales Price (USD):</label>
+            <input type="number" class="form-control" id="salesPriceUSD" name="salesPriceUSD" step="0.01">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="comt">Comission Rate (%):</label>
+            <input type="number" class="form-control" id="comt" name="comt" step="0.01">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Seller Price USD:</label>
+            <span id="splLabel" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Comission %:</label>
+            <span id="comLabel" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>VAT:</label>
+            <span id="ratioLabel" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Total Cost:</label>
+            <span id="tcLabel" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Net Profit:</label>
+            <span id="netProfitLabel" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Percent:</label>
+            <span id="percentLabel" class="badge badge-info d-block text-center p-2">0%</span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- EU Form -->
+    <div id="euForm" class="region-form">
+      <form id="euPriceForm">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="euSellerPrice">Seller Price (TL):</label>
+            <input type="number" class="form-control" id="euSellerPrice" name="euSellerPrice" step="0.01">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="euShippingUSD">Shipping (USD):</label>
+            <input type="number" class="form-control" id="euShippingUSD" name="euShippingUSD" step="0.01">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="euSalesPriceUSD">Sales Price (USD):</label>
+            <input type="number" class="form-control" id="euSalesPriceUSD" name="euSalesPriceUSD" step="0.01">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="euCom">Comission Rate (%):</label>
+            <input type="number" class="form-control" id="euCom" name="euCom" step="0.01">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Seller Price USD:</label>
+            <span id="euSellerPriceUSD" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Comission %:</label>
+            <span id="euComLabel" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>VAT:</label>
+            <span id="euWAT" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Total Cost:</label>
+            <span id="euTotalCost" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Sales Price EURO:</label>
+            <span id="euSalesPriceEURO" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label>Net Profit:</label>
+            <span id="euNetProfit" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>Percent:</label>
+            <span id="euPercent" class="badge badge-info d-block text-center p-2">0%</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label>UK:</label>
+            <span id="euUK" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label>SWE:</label>
+            <span id="euSWE" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label>PL:</label>
+            <span id="euPL" class="badge badge-info d-block text-center p-2">0</span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+   <!-- AE Form -->
+   <div id="aeForm" class="region-form">
+    <form id="aePriceForm">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="aeSellerPrice">Seller Price (TL):</label>
+          <input type="number" class="form-control" id="aeSellerPrice" name="aeSellerPrice" step="0.01">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="aeShippingUSD">Shipping (USD):</label>
+          <input type="number" class="form-control" id="aeShippingUSD" name="aeShippingUSD" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="aeSalesPriceUSD">Sales Price (USD):</label>
+          <input type="number" class="form-control" id="aeSalesPriceUSD" name="aeSalesPriceUSD" step="0.01">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="aeCom">Comission Rate (%):</label>
+          <input type="number" class="form-control" id="aeCom" name="aeCom" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Seller Price USD:</label>
+          <span id="aeSellerPriceUSD" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+        <div class="form-group col-md-6">
+          <label>Comission %:</label>
+          <span id="aeComLabel" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>VAT:</label>
+          <span id="aeWAT" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+        <div class="form-group col-md-6">
+          <label>Total Cost:</label>
+          <span id="aeTotalCost" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Sales Price AED:</label>
+          <span id="aeSalesPriceAED" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+        <div class="form-group col-md-6">
+          <label>Net Profit:</label>
+          <span id="aeNetProfit" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label>Percent:</label>
+          <span id="aePercent" class="badge badge-info d-block text-center p-2">0%</span>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Canada Form -->
+  <div id="caForm" class="region-form">
+    <form id="caPriceForm">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="caSellerPrice">Seller Price (TL):</label>
+          <input type="number" class="form-control" id="caSellerPrice" name="caSellerPrice" step="0.01">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="caShippingUSD">Shipping (USD):</label>
+          <input type="number" class="form-control" id="caShippingUSD" name="caShippingUSD" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="caSalesPriceUSD">Sales Price (USD):</label>
+          <input type="number" class="form-control" id="caSalesPriceUSD" name="caSalesPriceUSD" step="0.01">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="caCom">Comission Rate (%):</label>
+          <input type="number" class="form-control" id="caCom" name="caCom" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Seller Price USD:</label>
+          <span id="caSellerPriceUSD" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+        <div class="form-group col-md-6">
+          <label>Comission %:</label>
+          <span id="caComLabel" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>VAT:</label>
+          <span id="caWAT" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+        <div class="form-group col-md-6">
+          <label>Total Cost:</label>
+          <span id="caTotalCost" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Sales Price CAD:</label>
+          <span id="caSalesPriceCAD" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+        <div class="form-group col-md-6">
+          <label>Net Profit:</label>
+          <span id="caNetProfit" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label>Percent:</label>
+          <span id="caPercent" class="badge badge-info d-block text-center p-2">0%</span>
+        </div>
+      </div>
+    </form>
+  </div>
+
+      <!-- Arabistan Formu -->
+
+  <div id="saForm" class="region-form">
+    <form id="arabistanPriceForm">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="saSellerPrice">Seller Price (TL):</label>
+          <input type="number" class="form-control" id="saSellerPrice" name="saSellerPrice" step="0.01">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="saShippingUSD">Shipping (USD):</label>
+          <input type="number" class="form-control" id="saShippingUSD" name="saShippingUSD" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="saSalesPriceUSD">Sales Price (USD):</label>
+          <input type="number" class="form-control" id="saSalesPriceUSD" name="saSalesPriceUSD" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Seller Price USD:</label>
+          <span id="saSellerPriceUSD" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+        <div class="form-group col-md-6">
+          <label>VAT:</label>
+          <span id="saVAT" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Total Cost:</label>
+          <span id="saTotalCost" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+        <div class="form-group col-md-6">
+          <label>Net Profit:</label>
+          <span id="saNetProfit" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>SAR:</label>
+          <span id="saSAR" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+        <div class="form-group col-md-6">
+          <label>Percent:</label>
+          <span id="saPercent" class="badge badge-info d-block text-center p-2">0%</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <label>Nette:</label>
+          <span id="saNette" class="badge badge-info d-block text-center p-2">0</span>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  </div>
+  <script src="popup.js"></script>
+  <script src="formSwitcher.js"></script>
+  <script src="ae.js"></script>
+  <script src="us.js"></script>
+  <script src="canada.js"></script>
+  <script src="eu.js"></script>
+  <script src="arabistan.js"></script>
+</body>
+</html>
+
+
